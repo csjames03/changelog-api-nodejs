@@ -1,7 +1,18 @@
 import express from 'express';
-
+import router from './router';
+import morgan from 'morgan';
 
 const app = express()
+
+//middlewares
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true}))
+
+app.use((req, res, next) => {
+    next()
+})
+
 
 
 app.get('/', (req, res)=>{
@@ -10,11 +21,6 @@ app.get('/', (req, res)=>{
     res.json({message: 'Hello from express'})
 })
 
-
-
-app.get('/name', (req, res)=>{
-    res.status(200)
-    return res.json({name: 'James'})   
-})
+app.use('/api', router)
 
 export default  app 
